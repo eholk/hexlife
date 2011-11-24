@@ -1,6 +1,10 @@
+var sleep = 1000;
+
 var ctx = null;
 var grid = null;
 var newgrid = null;
+
+var clear = null;
 
 function makeGrid(width, height, init) {
     var g = new Array(height);
@@ -60,11 +64,94 @@ function drawGrid(grid, r) {
     }
 }
 
+function gridIndex(row, col) {
+    if(row >= 0 && col < grid[0].length &&
+       col >= 0 && row < grid.length)
+        return grid[row][col];
+    else
+        return null;
+}
+
+function neighborIndices(r, c) {
+    var n = [];
+
+    function appendIndex(rshift, cshift) {
+        var row = r + rshift;
+        var col = c + cshift;
+        if(row >= 0 && col < grid[0].length &&
+           col >= 0 && row < grid.length)
+            n = n.concat([[row, col]]);
+    }
+
+    appendIndex(-1, 0);
+    appendIndex(1, 0);
+    appendIndex(0, -1);
+    appendIndex(0, 1);
+    if(r % 2 == 0) {
+        appendIndex(1,  1);
+        appendIndex(-1, 1);
+    }
+    else {
+        appendIndex(1,  -1);
+        appendIndex(-1, -1);
+    }
+    return n;
+}
+
+function neighbors(row, col) {
+    var ni = neighborIndices(row, col);
+    var n = [];
+    for(i in ni) {
+        n = n.concat([grid[ni[i][0]][ni[i][1]]]);
+    }
+    return n;
+}
+
+function stepLife() {
+    for(var i = 0; i < grid.length; i++) {
+        for(var j = 0; j < grid[i].length; j++) {
+            var n = neighbors(i, j);
+            var count = 0;
+            for(x in n) {
+                if(n[x]) {
+                    count += 1;
+                }
+            }
+
+            newgrid[i][j] = count >= 3;
+        }
+    }
+
+    var tmp = grid;
+    grid = newgrid;
+    newgrid = tmp;
+}
+
+function redraw() {
+    clear();
+    var r = 16;
+    ctx.save();
+    ctx.translate(r + 2, r + 2);
+    drawGrid(grid, r);
+    ctx.restore();
+}
+
+function loop() {
+    stepLife();
+    redraw();
+    window.setTimeout(loop, sleep);
+}
+
 function init() {
     var canvas = document.getElementById("grid");
     ctx = canvas.getContext("2d");
 
+    clear = function() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
+
     grid = makeGrid(30, 28, false);
+    newgrid = makeGrid(30, 28, false);
 }
 
 function start() {
@@ -74,13 +161,9 @@ function start() {
     ctx.strokeStyle = "black";
     ctx.lineWidth = 2.0;
 
-    var r = 16;
-
-    ctx.translate(r + 2, r + 2);
-
     grid[4][5] = true;
     grid[5][5] = true;
     grid[6][5] = true;
-    
-    drawGrid(grid, r);
+    redraw();
+    window.setTimeout(loop, sleep);
 }
