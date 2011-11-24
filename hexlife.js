@@ -1,3 +1,4 @@
+var active = true;
 var p = 0.25;
 var sleep = 1000;
 
@@ -6,6 +7,19 @@ var grid = null;
 var newgrid = null;
 
 var clear = null;
+
+function onpause() {
+    var b = document.getElementById("btn_pause");
+    if(active) {
+        active = false;
+        b.value = "Start";
+    }
+    else {
+        active = true;
+        b.value = "Pause";
+        loop();
+    }
+}
 
 function makeGrid(width, height, init) {
     var g = new Array(height);
@@ -138,9 +152,11 @@ function redraw() {
 }
 
 function loop() {
-    stepLife();
-    redraw();
-    window.setTimeout(loop, sleep);
+    if(active) {
+        stepLife();
+        redraw();
+        window.setTimeout(loop, sleep);
+    }
 }
 
 function init() {
