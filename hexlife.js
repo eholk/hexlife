@@ -1,5 +1,6 @@
 var ctx = null;
 var grid = null;
+var newgrid = null;
 
 function makeGrid(width, height, init) {
     var g = new Array(height);
@@ -41,6 +42,10 @@ function drawHex(cx, cy, r) {
 function drawGrid(grid, r) {
     function drawRow(row) {
         for(var i = 0; i < row.length; i++) {
+            if(row[i])
+                ctx.fillStyle = "gray";
+            else
+                ctx.fillStyle = "white";
             drawHex(2 * i * r, 0, r);
         }
     }
@@ -73,5 +78,9 @@ function start() {
 
     ctx.translate(r + 2, r + 2);
 
+    grid[4][5] = true;
+    grid[5][5] = true;
+    grid[6][5] = true;
+    
     drawGrid(grid, r);
 }
