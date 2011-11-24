@@ -21,6 +21,11 @@ function onpause() {
     }
 }
 
+function onrestart() {
+    initGrid();
+    redraw();
+}
+
 function makeGrid(width, height, init) {
     var g = new Array(height);
     for(var i = 0; i < g.length; i++) {
