@@ -2,14 +2,9 @@
 <html>
   <head>
     <title>Game of Life on Hexagons</title>
+    <script type="text/javascript" src="hexlife.js"></script>
   </head>
-  <body>
-    <svg width="640" height="480">
-      <g transform="translate(320,240) scale(60)">
-        <polygon
-           points="-0.5,0 -.25,0.4330127019 .25,0.4330127019 0.5,0 .25,-0.4330127019 -.25,-0.4330127019"
-           fill="red">
-      </g>
-    </svg>
+  <body onload="start()">
+    <canvas id="grid" width="640" height="480"></canvas>
   </body>
 </html>
