@@ -1,3 +1,4 @@
+var p = 0.25;
 var sleep = 1000;
 
 var ctx = null;
@@ -154,6 +155,12 @@ function init() {
     newgrid = makeGrid(30, 28, false);
 }
 
+function initGrid() {
+    for(var i = 0; i < grid.length; i++)
+        for(var j = 0; j < grid[i].length; j++)
+            grid[i][j] = (Math.random() < p);
+}
+
 function start() {
     init();
 
@@ -161,9 +168,8 @@ function start() {
     ctx.strokeStyle = "black";
     ctx.lineWidth = 2.0;
 
-    grid[4][5] = true;
-    grid[5][5] = true;
-    grid[6][5] = true;
+    initGrid();
+
     redraw();
     window.setTimeout(loop, sleep);
 }
