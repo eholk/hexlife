@@ -1,5 +1,4 @@
 var active = true;
-var p = 0.25;
 var sleep = 1000;
 
 var ctx = null;
@@ -7,6 +6,11 @@ var grid = null;
 var newgrid = null;
 
 var clear = null;
+
+function getprob() {
+    var i = document.getElementById("in_prob");
+    return i.value;
+}
 
 function onpause() {
     var b = document.getElementById("btn_pause");
@@ -177,6 +181,7 @@ function init() {
 }
 
 function initGrid() {
+    var p = getprob();
     for(var i = 0; i < grid.length; i++)
         for(var j = 0; j < grid[i].length; j++)
             grid[i][j] = (Math.random() < p);
