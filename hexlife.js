@@ -1,11 +1,15 @@
 var active = true;
-var sleep = 1000;
 
 var ctx = null;
 var grid = null;
 var newgrid = null;
 
 var clear = null;
+
+function getdelay() {
+    var i = document.getElementById("in_delay");
+    return i.value;
+}
 
 function getprob() {
     var i = document.getElementById("in_prob");
@@ -164,7 +168,7 @@ function loop() {
     if(active) {
         stepLife();
         redraw();
-        window.setTimeout(loop, sleep);
+        window.setTimeout(loop, getdelay());
     }
 }
 
@@ -197,5 +201,5 @@ function start() {
     initGrid();
 
     redraw();
-    window.setTimeout(loop, sleep);
+    window.setTimeout(loop, getdelay());
 }
